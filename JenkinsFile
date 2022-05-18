@@ -10,9 +10,17 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('build') {
             steps {
-                sh('ls; cat docker-compose.yml')
+                sh """
+                   docker-compose pull
+                   echo "Complete"
+                   """
+            }
+        }
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
             }
         }
     }

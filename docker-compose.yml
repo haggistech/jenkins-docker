@@ -1,0 +1,16 @@
+---
+version: "2.1"
+services:
+  nginx:
+    image: nginx
+    container_name: nginx-test
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - CLI_ARGS="–auth-mode=basic"
+    volumes:
+      - /home/haggis/.config/docker/nginx:/config
+    ports:
+      - 38080:80
+    restart: unless-stopped

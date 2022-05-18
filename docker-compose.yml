@@ -7,10 +7,42 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
-      - CLI_ARGS="–auth-mode=basic"
     volumes:
       - /home/haggis/.config/docker/nginx:/config
     ports:
       - 38080:80
     restart: unless-stopped
+  pia:
+    image: qmcgaw/private-internet-access
+    container_name: pia
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    network_mode: bridge
+    ports:
+      - 8888:8888/tcp
+      - 8388:8388/tcp
+      - 8388:8388/udp
+      - 6789:6789
+      - 8686:8686
+      - 5299:5299
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    environment:
+      - USER=pia-user
+      - PASSWORD=pia-pass
+      - ENCRYPTION=strong
+      - PROTOCOL=udp
+      - REGION=UK London
+      - NONROOT=no
+      - DOT=on
+      - BLOCK_MALICIOUS=on
+      - BLOCK_NSA=off
+      - EXTRA_SUBNETS=192.168.0.0/24
+      - FIREWALL=on
+      - TINYPROXY=on
+      - TINYPROXY_PORT=8888
+      - TINYPROXY_LOG=Info
+    restart: always

@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Set Secrets') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'pia-login', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                sh('sed -i s/pia-user/$user/g' docker-compose.yml)
+                sh('sed -i s/pia-pass/$pass/g' docker-compose.yml)
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                sh('ls; cat docker-compose.yml')
+            }
+        }
+    }
+}
